@@ -22,6 +22,7 @@
 		D4B1DB4B1B0EB43300E08D12 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B1DB2A1B0EB43300E08D12 /* UIKit.framework */; };
 		D4B1DB531B0EB43300E08D12 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D4B1DB511B0EB43300E08D12 /* InfoPlist.strings */; };
 		D4B1DB551B0EB43300E08D12 /* RegressionAnalyticsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B1DB541B0EB43300E08D12 /* RegressionAnalyticsTests.m */; };
+		D4B436E01B0FD25A00D8E145 /* kgRegression.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B436DF1B0FD25A00D8E145 /* kgRegression.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,8 @@
 		D4B1DB501B0EB43300E08D12 /* RegressionAnalyticsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RegressionAnalyticsTests-Info.plist"; sourceTree = "<group>"; };
 		D4B1DB521B0EB43300E08D12 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D4B1DB541B0EB43300E08D12 /* RegressionAnalyticsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegressionAnalyticsTests.m; sourceTree = "<group>"; };
+		D4B436DE1B0FD25A00D8E145 /* kgRegression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kgRegression.h; sourceTree = "<group>"; };
+		D4B436DF1B0FD25A00D8E145 /* kgRegression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = kgRegression.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +127,8 @@
 				D4B1DB3F1B0EB43300E08D12 /* kgSecondViewController.m */,
 				D4B1DB411B0EB43300E08D12 /* Images.xcassets */,
 				D4B1DB2D1B0EB43300E08D12 /* Supporting Files */,
+				D4B436DE1B0FD25A00D8E145 /* kgRegression.h */,
+				D4B436DF1B0FD25A00D8E145 /* kgRegression.m */,
 			);
 			path = RegressionAnalytics;
 			sourceTree = "<group>";
@@ -259,6 +264,7 @@
 				D4B1DB371B0EB43300E08D12 /* kgAppDelegate.m in Sources */,
 				D4B1DB331B0EB43300E08D12 /* main.m in Sources */,
 				D4B1DB3D1B0EB43300E08D12 /* kgFirstViewController.m in Sources */,
+				D4B436E01B0FD25A00D8E145 /* kgRegression.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +471,7 @@
 				D4B1DB5A1B0EB43300E08D12 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D4B1DB5B1B0EB43300E08D12 /* Build configuration list for PBXNativeTarget "RegressionAnalyticsTests" */ = {
 			isa = XCConfigurationList;
@@ -473,6 +480,7 @@
 				D4B1DB5D1B0EB43300E08D12 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
