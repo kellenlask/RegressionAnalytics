@@ -132,4 +132,57 @@
 	
 } //End linReg
 
+
+//--------------------------------------------------------
+//
+//		Nonstandard Regressions
+//
+//--------------------------------------------------------
+
+
+// Logarithm Regression: y = log(ax+b), or e^y = ax+b
++(NSArray*)logReg:(NSArray*)xVals yValues:(NSArray*)yVals
+{
+    NSMutableArray* yExpVals = [yVals mutableCopy]; // Make mutable copies to dynamically edit
+    for(int i=0; i<[yVals count]; i++)
+    {
+        yExpVals[i] = @(exp([yVals[i] doubleValue])); // Do e^() both sides to linearize
+    }
+    
+    NSMutableArray* returnMArray = [[kgRegression linReg:xVals yValues:yExpVals] mutableCopy];
+    
+    return returnMArray;
+} // End logReg
+
+// Exponential Regression: y = e^(ax+b), or log(y) = ax+b
++(NSArray*)expReg:(NSArray*)xVals yValues:(NSArray*)yVals
+{
+    NSMutableArray* yLogVals = [yVals mutableCopy]; // Make mutable copies to dynamically edit
+    for(int i=0; i<[yVals count]; i++)
+    {
+        yLogVals[i] = @(log([yVals[i] doubleValue])); // Do log() both sides to linearize
+    }
+    
+    NSMutableArray* returnMArray = [[kgRegression linReg:xVals yValues:yLogVals] mutableCopy];
+    
+    return returnMArray;
+} // End expReg
+
+// Power Regression: y = ax^b, or log(y) = log(a)+b*log(x)
++(NSArray*)powReg:(NSArray*)xVals yValues:(NSArray*)yVals
+{
+    NSMutableArray* xLogVals = [xVals mutableCopy]; // Make mutable copies to edit
+    NSMutableArray* yLogVals = [yVals mutableCopy]; // "
+    for(int i=0; i<[yVals count]; i++)
+    {
+        xLogVals[i] = @(log([xVals[i] doubleValue])); // Do log() both sides to linearize
+        yLogVals[i] = @(log([yVals[i] doubleValue])); // Do log() both sides to linearize
+    }
+    
+    NSMutableArray* returnMArray = [[kgRegression linReg:xLogVals yValues:yLogVals] mutableCopy];
+    returnMArray[0]=@(exp([returnMArray[0] doubleValue])); // Change log(a) that linReg found back to a
+    
+    return returnMArray;
+} // End logReg
+
 @end
