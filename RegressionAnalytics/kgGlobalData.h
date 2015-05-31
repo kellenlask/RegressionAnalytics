@@ -9,5 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @interface kgGlobalData : NSObject
+-(NSArray*)getXValues;
+-(NSArray*)getYValues;
+-(int)getPreferedRegression;
 
+-(void)setXValues:(NSArray*)values;
+-(void)setYValues:(NSArray*)values;
+-(void)setPreferedRegression:(int)best;
 @end
