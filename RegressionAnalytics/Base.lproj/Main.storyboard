@@ -114,7 +114,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Graph" image="graph" id="b87-AF-Ciz"/>
                     <connections>
-                        <outlet property="canvas" destination="X6D-Cd-IFJ" id="PQY-NW-4gX"/>
+                        <outlet property="canvasView" destination="X6D-Cd-IFJ" id="CQs-Ea-jmE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AuT-aZ-DKt" userLabel="First Responder" sceneMemberID="firstResponder"/>

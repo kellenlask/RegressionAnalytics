@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface kgGraphViewController : UIViewController
-@property (strong, nonatomic) IBOutlet UIImageView *canvas;
+@property (strong, nonatomic) IBOutlet UIImageView *canvasView;
 
 - (IBAction)zoom:(UIStepper *)sender;
+
+
 
 @end

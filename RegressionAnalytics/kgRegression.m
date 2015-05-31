@@ -26,7 +26,7 @@
 } //End calcStdDev
 
 
-//Calculates the variance of the passed dataset
+//Calculates the variance of the passed data set
 +(double)calcVariance:(NSArray*)values
 {
 	double mean = [kgRegression calcMean:values];
@@ -46,7 +46,7 @@
 } //End calcVariance
 
 
-//Calculates the arithmetic mean of the passed dataset
+//Calculates the arithmetic mean of the passed data set
 +(double)calcMean:(NSArray*)values
 {
 	double sum = 0;
@@ -64,7 +64,7 @@
 } //End calcMean
 
 
-//Calculates the Median of the passed dataset
+//Calculates the Median of the passed data set
 +(double)calcMedian:(NSArray*)values
 {
 	NSArray *sorted = [values sortedArrayUsingSelector:@selector(compare:)];
