@@ -7,14 +7,17 @@
 //
 
 #import "kgFirstViewController.h"
-
+#import "kgGlobalData.h"
 
 @implementation kgFirstViewController
+
+kgGlobalData *data;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+	data = [[kgGlobalData alloc] init];
+	
 	
 } //End viewDidLoad
 
