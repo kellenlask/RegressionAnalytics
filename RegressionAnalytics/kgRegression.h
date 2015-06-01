@@ -9,10 +9,19 @@
 #import <Foundation/Foundation.h>
 
 @interface kgRegression : NSObject
+//Fiddly Bits
 +(double)calcStdDev:(NSArray*)values;
 +(double)calcVariance:(NSArray*)values;
 +(double)calcMean:(NSArray*)values;
 +(double)calcMedian:(NSArray*)values;
+
+//Regressions
++(double)linRegR:(NSArray*)xVals yValues:(NSArray*)yVals;
++(NSArray*)linReg:(NSArray*)xVals yValues:(NSArray*)yVals;
++(NSArray*)logReg:(NSArray*)xVals yValues:(NSArray*)yVals;
++(NSArray*)expReg:(NSArray*)xVals yValues:(NSArray*)yVals;
++(NSArray*)powReg:(NSArray*)xVals yValues:(NSArray*)yVals;
+
 
 
 @end
