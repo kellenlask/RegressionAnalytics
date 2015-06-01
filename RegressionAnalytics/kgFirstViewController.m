@@ -18,7 +18,6 @@ kgGlobalData *data;
     [super viewDidLoad];
 	data = [[kgGlobalData alloc] init];
 	
-	
 } //End viewDidLoad
 
 @end

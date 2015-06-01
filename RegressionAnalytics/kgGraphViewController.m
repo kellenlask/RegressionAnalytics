@@ -27,6 +27,12 @@ NSArray* regression;
 {
     [super viewDidLoad];
 	
+} //End viewDidLoad
+
+-(void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	
 	data = [[kgGlobalData alloc] init];
 	
 	//Make sure we don't try to graph something impossible
@@ -41,8 +47,8 @@ NSArray* regression;
 	} else {
 		[self prepareFunction];
 	}
-
-} //End viewDidLoad
+	
+}
 
 -(void)prepareFunction
 {
