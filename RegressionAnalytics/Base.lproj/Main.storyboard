@@ -81,24 +81,30 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X6D-Cd-IFJ">
-                                <rect key="frame" x="0.0" y="20" width="320" height="366"/>
+                                <rect key="frame" x="0.0" y="52" width="320" height="334"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="366" id="fwh-Hg-Mx6"/>
+                                    <constraint firstAttribute="height" constant="334" id="fwh-Hg-Mx6"/>
                                 </constraints>
                             </imageView>
-                            <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" minimumValue="-50" maximumValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="tGW-Md-2o2">
+                            <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" minimumValue="-20" maximumValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="tGW-Md-2o2">
                                 <rect key="frame" x="113" y="394" width="94" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <action selector="zoom:" destination="aqG-tt-b7o" eventType="valueChanged" id="8GA-9e-Jvw"/>
                                 </connections>
                             </stepper>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Regression Equation" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LDX-DM-yja">
+                                <rect key="frame" x="20" y="20" width="280" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="tGW-Md-2o2" firstAttribute="top" secondItem="X6D-Cd-IFJ" secondAttribute="bottom" constant="8" symbolic="YES" id="3Qd-dE-xvB"/>
-                            <constraint firstItem="X6D-Cd-IFJ" firstAttribute="top" secondItem="2on-Br-G2N" secondAttribute="top" constant="20" symbolic="YES" id="HaK-Y2-RTa"/>
+                            <constraint firstItem="X6D-Cd-IFJ" firstAttribute="top" secondItem="2on-Br-G2N" secondAttribute="top" constant="52" id="HaK-Y2-RTa"/>
                             <constraint firstItem="X6D-Cd-IFJ" firstAttribute="leading" secondItem="2on-Br-G2N" secondAttribute="leading" id="Tf2-92-x6s"/>
                             <constraint firstItem="X6D-Cd-IFJ" firstAttribute="centerX" secondItem="tGW-Md-2o2" secondAttribute="centerX" id="jnb-rr-OUv"/>
                             <constraint firstAttribute="trailing" secondItem="X6D-Cd-IFJ" secondAttribute="trailing" id="nt0-lC-KGN"/>
@@ -107,6 +113,8 @@
                     <tabBarItem key="tabBarItem" title="Graph" image="graph" id="b87-AF-Ciz"/>
                     <connections>
                         <outlet property="canvasView" destination="X6D-Cd-IFJ" id="CQs-Ea-jmE"/>
+                        <outlet property="equation" destination="LDX-DM-yja" id="1gW-Uo-vHM"/>
+                        <outlet property="zoom" destination="tGW-Md-2o2" id="ikg-Da-el2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AuT-aZ-DKt" userLabel="First Responder" sceneMemberID="firstResponder"/>
