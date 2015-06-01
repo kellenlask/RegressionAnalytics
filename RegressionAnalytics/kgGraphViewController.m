@@ -30,9 +30,15 @@ NSArray* regression;
 	data = [[kgGlobalData alloc] init];
 	
 	//Make sure we don't try to graph something impossible
-	if(data.getXValues.count !=  data.getYValues.count) {}
-	else if(data.getXValues.count == 0 || data.getYValues.count == 0) {}
-	else {
+	if(data.getXValues.count !=  data.getYValues.count) {
+		NSString* error = @"Error: Data entry mismatch.";
+		[_equation setText:error];
+		
+	} else if(data.getXValues.count == 0 || data.getYValues.count == 0) {
+		NSString* error = @"No data entered.";
+		[_equation setText:error];
+		
+	} else {
 		[self prepareFunction];
 	}
 
@@ -48,7 +54,9 @@ NSArray* regression;
     {
         x[i]=xmin+i*dx;
     }
-    
+	
+    NSString* curve;	
+	
     switch([data getPreferedRegression])
     {
         default: //None
@@ -56,6 +64,9 @@ NSArray* regression;
 			
         case 1: //Linear
 			regression = [kgRegression linReg:data.getXValues yValues:data.getYValues];
+			
+			curve = [NSString stringWithFormat:@"y=(%f)x+(%f)", [regression[1] doubleValue], [regression[0] doubleValue]];
+			[_equation setText:curve];
 			
             for(int i=0;i<resolution;i++)
             {
@@ -68,6 +79,9 @@ NSArray* regression;
         case 2: //Log
 			regression = [kgRegression logReg:data.getXValues yValues:data.getYValues];
 			
+			curve = [NSString stringWithFormat:@"y=log((%f)x+(%f))", [regression[1] doubleValue], [regression[0] doubleValue]];
+			[_equation setText:curve];
+			
             for(int i=0;i<resolution;i++)
             {
                 y[i]=log([regression[1] doubleValue]*x[i]+[regression[0] doubleValue]);
@@ -78,6 +92,9 @@ NSArray* regression;
 			
         case 3: //Exp
 			regression = [kgRegression expReg:data.getXValues yValues:data.getYValues];
+			
+			curve = [NSString stringWithFormat:@"y=e^((%f)x+(%f))", [regression[1] doubleValue], [regression[0] doubleValue]];
+			[_equation setText:curve];
 			
             for(int i=0;i<resolution;i++)
             {
@@ -90,6 +107,9 @@ NSArray* regression;
         case 4: //Power
 			regression = [kgRegression powReg:data.getXValues yValues:data.getYValues];
 			
+			curve = [NSString stringWithFormat:@"y=(%f)x^(%f)", [regression[1] doubleValue], [regression[0] doubleValue]];
+			[_equation setText:curve];
+			
             for(int i=0;i<resolution;i++)
             {
                 y[i]=pow([regression[1] doubleValue]*x[i], [regression[0] doubleValue]);
@@ -97,16 +117,19 @@ NSArray* regression;
 			
 			[self drawGraph:x y:y];	
             break;
-    }
-    
-    
-	
+    } //End Switch
 } //End prepareFunction
 
 - (IBAction)zoom:(UIStepper *)sender 
 {
-	//Scale the window
+	//Get the Stepper Value
+	int zoomLevel = _zoom.value;
 	
+	//Scale the window
+	xmax = 10 * pow(1.5, zoomLevel);
+	xmin = -10 * pow(1.5, zoomLevel);
+	ymax = 10 * pow(1.5, zoomLevel);
+	ymin = -10 * pow(1.5, zoomLevel);
 	
 	//Redraw the graph
 	[self prepareFunction];
@@ -116,11 +139,11 @@ NSArray* regression;
 - (void)drawGraph:(double[])x y:(double[])y
 {
     //Prepare the Canvas
-    _canvasView.image = nil;
-    UIGraphicsBeginImageContext(self.view.frame.size);
-    [self.canvasView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 5);
+	_canvasView.image = nil;
+	UIGraphicsBeginImageContext(self.view.frame.size);
+	[self.canvasView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+	CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+	CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 5);
     
 	//Setup the axis
     double yAxis = self.view.frame.size.width / 2;
