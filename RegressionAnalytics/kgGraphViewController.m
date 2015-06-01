@@ -128,18 +128,30 @@ NSArray* regression;
 
 - (IBAction)zoom:(UIStepper *)sender 
 {
-	//Get the Stepper Value
-	int zoomLevel = _zoom.value;
 	
-	//Scale the window
-	xmax = 10 * pow(1.5, zoomLevel);
-	xmin = -10 * pow(1.5, zoomLevel);
-	ymax = 10 * pow(1.5, zoomLevel);
-	ymin = -10 * pow(1.5, zoomLevel);
+	//Make sure we don't try to graph something impossible
+	if(data.getXValues.count !=  data.getYValues.count) {
+		NSString* error = @"Error: Data entry mismatch.";
+		[_equation setText:error];
+		
+	} else if(data.getXValues.count == 0 || data.getYValues.count == 0) {
+		NSString* error = @"No data entered.";
+		[_equation setText:error];
+		
+	} else {
+		//Get the Stepper Value
+		int zoomLevel = _zoom.value;
 	
-	//Redraw the graph
-	[self prepareFunction];
+		//Scale the window
+		xmax = 10 * pow(1.5, zoomLevel);
+		xmin = -10 * pow(1.5, zoomLevel);
+		ymax = 10 * pow(1.5, zoomLevel);
+		ymin = -10 * pow(1.5, zoomLevel);
 	
+		//Redraw the graph
+		[self prepareFunction];
+		
+	}
 } //End zoom
 
 - (void)drawGraph:(double[])x y:(double[])y
