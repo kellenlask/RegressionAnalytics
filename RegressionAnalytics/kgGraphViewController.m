@@ -21,17 +21,29 @@ double xmax = 10.;
 double ymin = -10.;
 double ymax = 10.;
 
+int HEIGHT;
+int WIDTH;
+
+
 NSArray* regression;
 
+//-----------------------------------------------------------------------
+//
+//		View Methods
+//
+//-----------------------------------------------------------------------
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	
 } //End viewDidLoad
 
--(void)viewWillAppear:(BOOL)animated
+-(void)viewDidAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+	
+	HEIGHT = self.canvasView.frame.size.height;
+	WIDTH = self.canvasView.frame.size.width;
 	
 	data = [[kgGlobalData alloc] init];
 	
@@ -49,6 +61,45 @@ NSArray* regression;
 	}
 	
 }
+
+//-----------------------------------------------------------------------
+//
+//		Action Handlers
+//
+//-----------------------------------------------------------------------
+
+- (IBAction)zoom:(UIStepper *)sender 
+{
+	//Make sure we don't try to graph something impossible
+	if(data.getXValues.count !=  data.getYValues.count) {
+		NSString* error = @"Error: Data entry mismatch.";
+		[_equation setText:error];
+		
+	} else if(data.getXValues.count == 0 || data.getYValues.count == 0) {
+		NSString* error = @"No data entered.";
+		[_equation setText:error];
+		
+	} else {
+		//Get the Stepper Value
+		int zoomLevel = _zoom.value;
+		
+		//Scale the window
+		xmax = 10 * pow(1.5, zoomLevel);
+		xmin = -10 * pow(1.5, zoomLevel);
+		ymax = 10 * pow(1.5, zoomLevel);
+		ymin = -10 * pow(1.5, zoomLevel);
+		
+		//Redraw the graph
+		[self prepareFunction];
+		
+	}
+} //End zoom
+
+//-----------------------------------------------------------------------
+//
+//		Graph Methods
+//
+//-----------------------------------------------------------------------
 
 -(void)prepareFunction
 {
@@ -136,33 +187,6 @@ NSArray* regression;
     } //End Switch
 } //End prepareFunction
 
-- (IBAction)zoom:(UIStepper *)sender 
-{
-	//Make sure we don't try to graph something impossible
-	if(data.getXValues.count !=  data.getYValues.count) {
-		NSString* error = @"Error: Data entry mismatch.";
-		[_equation setText:error];
-		
-	} else if(data.getXValues.count == 0 || data.getYValues.count == 0) {
-		NSString* error = @"No data entered.";
-		[_equation setText:error];
-		
-	} else {
-		//Get the Stepper Value
-		int zoomLevel = _zoom.value;
-	
-		//Scale the window
-		xmax = 10 * pow(1.5, zoomLevel);
-		xmin = -10 * pow(1.5, zoomLevel);
-		ymax = 10 * pow(1.5, zoomLevel);
-		ymin = -10 * pow(1.5, zoomLevel);
-	
-		//Redraw the graph
-		[self prepareFunction];
-		
-	}
-} //End zoom
-
 - (void)drawGraph:(double[])x y:(double[])y
 {
     //Prepare the Canvas
@@ -205,6 +229,7 @@ NSArray* regression;
 	//Draw the points
 	for(int i = 0; i < xVals.count; i++) 
 	{
+		//If the point falls within the window
 		if(xmin <= [xVals[i] doubleValue] && [xVals[i] doubleValue] <= xmax && ymin <= [yVals[i] doubleValue] && [yVals[i] doubleValue] <= ymax) {
 			//Put the point on the graph
 			double dx = (xmax-xmin)/resolution; //dx = dy, so far...
@@ -224,21 +249,23 @@ NSArray* regression;
 //Draws a point on the graph
 -(void)drawPoint:(int)x y:(int)y
 {
+	y = HEIGHT - y;
 	CGContextAddEllipseInRect(UIGraphicsGetCurrentContext(), (CGRectMake (x, y, 3.0, 3.0)));
 	CGContextDrawPath(UIGraphicsGetCurrentContext(), kCGPathFill);
 	CGContextStrokePath(UIGraphicsGetCurrentContext());
-}
+	
+} //End drawPoint
 
 //Scales the window to the ImageView dx
 - (double)xToGraph:(double)x
 {
-    return (self.view.frame.size.width*x/(xmax-xmin));
+    return (WIDTH*x/(xmax-xmin));
 }
 
 //Scales the window to the ImageView dy
 - (double)yToGraph:(double)y
 {
-    return (self.view.frame.size.height*y/(ymax-ymin));
+    return (HEIGHT*y/(ymax-ymin));
 }
 
 @end
