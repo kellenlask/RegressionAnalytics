@@ -41,7 +41,14 @@ kgGlobalData *data;
 	
 } //End viewDidLoad
 
-
+-(void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+	
+	[data setXValues:_inputXValues];
+	[data setYValues:_inputYValues];
+	
+}
 
 //--------------------------------------------------------
 //

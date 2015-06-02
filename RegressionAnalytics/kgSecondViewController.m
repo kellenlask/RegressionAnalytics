@@ -23,9 +23,11 @@ NSArray* powRegression;
 {
     [super viewDidLoad];
 	
+	[self viewWillAppear:false];
+	
 } //End viewDidLoad
 
--(void)viewWillAppear:(BOOL)animated
+-(void)viewDidAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
 	
@@ -68,8 +70,23 @@ NSArray* powRegression;
 	expRegression = [kgRegression expReg:data.getXValues yValues:data.getYValues];
 	powRegression = [kgRegression powReg:data.getXValues yValues:data.getYValues];
 	
+	//Simple Analysis
+	NSString* simple = [NSString stringWithFormat:@"X \nMean: %f\nStdDev: %f\nVar: %f\n--------------------\nY \nMean: %f\nStdDev: %f\nVar: %f\n====================", xMean, xStdDev, xVariance, yMean, yStdDev, yVariance];
+	
+	//Linear Regression
+	NSString* linear = [NSString stringWithFormat:@"Linear Regression\n\tr: %f\n\tr²: %f\n\ty=(%f)x+(%f)", [linRegression[2] doubleValue], pow([linRegression[2] doubleValue], 2), [linRegression[1] doubleValue], [linRegression[0] doubleValue]];
+	
+	//Logarithmic Regression
+	NSString* logarithmic = [NSString stringWithFormat:@"Logarithmic Regression\n\tr: %f\n\tr²: %f\n\ty=log((%f)x+(%f))", [logRegression[2] doubleValue], pow([logRegression[2] doubleValue], 2), [logRegression[1] doubleValue], [logRegression[0] doubleValue]];
+	
+	//Exponential Regression
+	NSString* exponential = [NSString stringWithFormat:@"Exponential Regression\n\tr: %f\n\tr²: %f\n\ty=e^((%f)x+(%f))", [expRegression[2] doubleValue], pow([expRegression[2] doubleValue], 2), [expRegression[1] doubleValue], [expRegression[0] doubleValue]];
+	
+	//Power Regression
+	NSString* power = [NSString stringWithFormat:@"Power Regression\n\tr: %f\n\tr²: %f\n\ty=(%f)x^((%f))", [powRegression[2] doubleValue], pow([powRegression[2] doubleValue], 2), [powRegression[0] doubleValue], [powRegression[1] doubleValue]];
+	
 	//Create the MONSTER STRING!!!!!!!!
-	NSString* returnString = [NSString stringWithFormat:@"X \nMean: %f\nStdDev: %f\nVar: %f\n--------------------\nY \nMean: %f\nStdDev: %f\nVar: %f\n====================Linear Regression\n\tr: %f\n\tr²: %f\n\ty=%fx+%f\nLogarithmic Regression\n\tr: %f\n\tr²: %f\n\ty=log(%fx+%f\nExponential Regression\n\tr: %f\n\tr²: %f\n\ty=e^(%fx+%f)\nPower Regression\n\tr: %f\n\tr²: %f\n\ty=%fx^(%f))", xMean, xStdDev, xVariance, yMean, yStdDev, yVariance, [linRegression[2] doubleValue], pow([linRegression[2] doubleValue], 2), [linRegression[1] doubleValue], [linRegression[0] doubleValue], [logRegression[2] doubleValue], pow([logRegression[2] doubleValue], 2), [logRegression[1] doubleValue], [logRegression[0] doubleValue], [expRegression[2] doubleValue], pow([expRegression[2] doubleValue], 2), [expRegression[1] doubleValue], [expRegression[0] doubleValue], [powRegression[2] doubleValue], pow([powRegression[2] doubleValue], 2), [powRegression[1] doubleValue], [powRegression[0] doubleValue]];
+	NSString* returnString = [NSString stringWithFormat:@"%@\n\n%@\n\n%@\n\n%@\n\n%@", simple, linear, logarithmic, exponential, power];
 	
 	//Do Dat Return Thang
 	return returnString;
