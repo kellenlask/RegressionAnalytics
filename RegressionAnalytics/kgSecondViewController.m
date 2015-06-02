@@ -59,10 +59,12 @@ NSArray* powRegression;
 	//Basic Information
 	double xMean = [kgRegression calcMean:data.getXValues];
 	double yMean = [kgRegression calcMean:data.getYValues];
+	double xMedian = [kgRegression calcMedian:data.getXValues];
+	double yMedian = [kgRegression calcMedian:data.getYValues];	
 	double xVariance = [kgRegression calcVariance:data.getXValues];
 	double yVariance = [kgRegression calcVariance:data.getYValues];
 	double xStdDev = [kgRegression calcStdDev:data.getXValues];
-	double yStdDev = [kgRegression calcStdDev:data.getYValues];	
+	double yStdDev = [kgRegression calcStdDev:data.getYValues];
 	
 	//Linear Regression
 	linRegression = [kgRegression linReg:data.getXValues yValues:data.getYValues];
@@ -71,7 +73,7 @@ NSArray* powRegression;
 	powRegression = [kgRegression powReg:data.getXValues yValues:data.getYValues];
 	
 	//Simple Analysis
-	NSString* simple = [NSString stringWithFormat:@"X \nMean: %f\nStdDev: %f\nVar: %f\n--------------------\nY \nMean: %f\nStdDev: %f\nVar: %f\n====================", xMean, xStdDev, xVariance, yMean, yStdDev, yVariance];
+	NSString* simple = [NSString stringWithFormat:@"X \nMean: %f\nMedian: %f\nStdDev: %f\nVar: %f\n--------------------\nY \nMean: %f\nMedian: %f\nStdDev: %f\nVar: %f\n====================", xMean, xMedian, xStdDev, xVariance, yMean, yMedian, yStdDev, yVariance];
 	
 	//Linear Regression
 	NSString* linear = [NSString stringWithFormat:@"Linear Regression\n\tr: %f\n\tr²: %f\n\ty=(%f)x+(%f)", [linRegression[2] doubleValue], pow([linRegression[2] doubleValue], 2), [linRegression[1] doubleValue], [linRegression[0] doubleValue]];
