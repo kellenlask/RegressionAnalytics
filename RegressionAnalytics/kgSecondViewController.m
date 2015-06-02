@@ -33,7 +33,7 @@ NSArray* powRegression;
 	data = [[kgGlobalData alloc] init];
 	
 	if(data.getXValues.count !=  data.getYValues.count) {
-		NSString* error = [NSString stringWithFormat:@"Error: Data entry mismatch.\nY:%d values\nX:%d values", data.getXValues.count, data.getYValues.count];
+		NSString* error = [NSString stringWithFormat:@"Error: Data entry mismatch.\nY:%d values\nX:%d values", (unsigned) data.getXValues.count, (unsigned) data.getYValues.count];
 		
 		[_regressionView setText:error];
 		

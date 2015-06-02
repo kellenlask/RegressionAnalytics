@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface kgFirstViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UITextField *xField;
+@property (weak, nonatomic) IBOutlet UITextField *yField;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+- (IBAction)addData:(id)sender;
 
 
 @end
