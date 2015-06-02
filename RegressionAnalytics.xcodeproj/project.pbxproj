@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D42152571B17A22000CF6F96 /* kgGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D42152561B17A22000CF6F96 /* kgGraphViewController.m */; };
-		D42152591B17A7E700CF6F96 /* graph-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D42152581B17A7E700CF6F96 /* graph-icon.png */; };
 		D474345C1B1A767400B7E58C /* kgGlobalData.m in Sources */ = {isa = PBXBuildFile; fileRef = D474345B1B1A767400B7E58C /* kgGlobalData.m */; };
 		D4B1DB271B0EB43300E08D12 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B1DB261B0EB43300E08D12 /* Foundation.framework */; };
 		D4B1DB291B0EB43300E08D12 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B1DB281B0EB43300E08D12 /* CoreGraphics.framework */; };
@@ -41,7 +40,6 @@
 /* Begin PBXFileReference section */
 		D42152551B17A22000CF6F96 /* kgGraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kgGraphViewController.h; sourceTree = "<group>"; };
 		D42152561B17A22000CF6F96 /* kgGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = kgGraphViewController.m; sourceTree = "<group>"; };
-		D42152581B17A7E700CF6F96 /* graph-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "graph-icon.png"; path = "../../../Downloads/graph-icon.png"; sourceTree = "<group>"; };
 		D474345A1B1A767400B7E58C /* kgGlobalData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kgGlobalData.h; sourceTree = "<group>"; };
 		D474345B1B1A767400B7E58C /* kgGlobalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = kgGlobalData.m; sourceTree = "<group>"; };
 		D4B1DB231B0EB43300E08D12 /* RegressionAnalytics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RegressionAnalytics.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,7 +146,6 @@
 		D4B1DB2D1B0EB43300E08D12 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D42152581B17A7E700CF6F96 /* graph-icon.png */,
 				D4B1DB2E1B0EB43300E08D12 /* RegressionAnalytics-Info.plist */,
 				D4B1DB2F1B0EB43300E08D12 /* InfoPlist.strings */,
 				D4B1DB321B0EB43300E08D12 /* main.m */,
@@ -253,7 +250,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4B1DB421B0EB43300E08D12 /* Images.xcassets in Resources */,
-				D42152591B17A7E700CF6F96 /* graph-icon.png in Resources */,
 				D4B1DB311B0EB43300E08D12 /* InfoPlist.strings in Resources */,
 				D4B1DB3A1B0EB43300E08D12 /* Main.storyboard in Resources */,
 			);
