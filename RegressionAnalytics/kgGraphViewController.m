@@ -52,33 +52,36 @@ NSArray* regression;
 
 -(void)prepareFunction
 {
+	//Create arrays to store the line points
 	double x[resolution];
     double y[resolution];
+	
+	//Figure out the number of window points per resolution point 
     double dx=(xmax-xmin)/resolution;
     
+	//Create the list of x values to plug into the function
     for(int i = 0; i < resolution; i++)
     {
-        x[i]=xmin+i*dx;
+        x[i]= xmin + i * dx;
     }
 	
-    NSString* curve;	
+    NSString* curve;
 	
+	//Map the function's x's to its y's using the appropriate regression model
     switch([data getPreferedRegression])
     {
-        default: //None
-            break;
-			
-        case 1: //Linear
+		case 1: //Linear
 			regression = [kgRegression linReg:data.getXValues yValues:data.getYValues];
 			
 			curve = [NSString stringWithFormat:@"y=(%f)x+(%f)", [regression[1] doubleValue], [regression[0] doubleValue]];
 			[_equation setText:curve];
 			
-            for(int i=0;i<resolution;i++)
+            for(int i = 0; i < resolution; i++)
             {
                 y[i]=[regression[1] doubleValue]*x[i]-[regression[0] doubleValue];
             }
 			
+			//Draw the graph
 			[self drawGraph:x y:y];	
             break;
 			
@@ -88,11 +91,12 @@ NSArray* regression;
 			curve = [NSString stringWithFormat:@"y=log((%f)x+(%f))", [regression[1] doubleValue], [regression[0] doubleValue]];
 			[_equation setText:curve];
 			
-            for(int i=0;i<resolution;i++)
+            for(int i = 0; i < resolution; i++)
             {
                 y[i]=log([regression[1] doubleValue]*x[i]+[regression[0] doubleValue]);
             }
 			
+			//Draw the graph
 			[self drawGraph:x y:y];	
             break;
 			
@@ -102,11 +106,12 @@ NSArray* regression;
 			curve = [NSString stringWithFormat:@"y=e^((%f)x+(%f))", [regression[1] doubleValue], [regression[0] doubleValue]];
 			[_equation setText:curve];
 			
-            for(int i=0;i<resolution;i++)
+            for(int i = 0; i < resolution; i++)
             {
                 y[i]=pow(M_E, ([regression[1] doubleValue]*x[i]+[regression[0] doubleValue]));
             }
 			
+			//Draw the graph
 			[self drawGraph:x y:y];	
             break;
 			
@@ -116,19 +121,23 @@ NSArray* regression;
 			curve = [NSString stringWithFormat:@"y=(%f)x^(%f)", [regression[1] doubleValue], [regression[0] doubleValue]];
 			[_equation setText:curve];
 			
-            for(int i=0;i<resolution;i++)
+            for(int i = 0; i < resolution; i++)
             {
                 y[i]=pow([regression[1] doubleValue]*x[i], [regression[0] doubleValue]);
             }
 			
+			//Draw the graph
 			[self drawGraph:x y:y];	
             break;
+			
+		default: //None
+			//Don't do anything
+            break;	
     } //End Switch
 } //End prepareFunction
 
 - (IBAction)zoom:(UIStepper *)sender 
 {
-	
 	//Make sure we don't try to graph something impossible
 	if(data.getXValues.count !=  data.getYValues.count) {
 		NSString* error = @"Error: Data entry mismatch.";
@@ -168,7 +177,7 @@ NSArray* regression;
     double xAxis = self.view.frame.size.height / 2;
     
     //Re-scale the points to fit in the window
-    for(int i=0;i<resolution;i++)
+    for(int i = 0; i < resolution; i++)
     {
         x[i]=[self xToGraph:x[i]];
         y[i]=yAxis-[self yToGraph:y[i]];
@@ -188,6 +197,22 @@ NSArray* regression;
     {
         CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), x[i], y[i]);
     }
+	
+	NSArray* xVals = data.getXValues;
+	NSArray* yVals = data.getYValues;
+	
+	
+	//Draw the points
+	for(int i = 0; i < xVals.count; i++) 
+	{
+		if(xmin <= [xVals[i] doubleValue] && [xVals[i] doubleValue] <= xmax && ymin <= [yVals[i] doubleValue] && [yVals[i] doubleValue] <= ymax) {
+			//Put the point on the graph
+			double dx = (xmax-xmin)/resolution; //dx = dy, so far...
+			[self drawPoint: [xVals[i] doubleValue] * dx y:[yVals[i] doubleValue] * dx];
+			
+		}
+	} //End For-loop
+	
     
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     CGContextFlush(UIGraphicsGetCurrentContext());
@@ -215,7 +240,5 @@ NSArray* regression;
 {
     return (self.view.frame.size.height*y/(ymax-ymin));
 }
-
-
 
 @end
