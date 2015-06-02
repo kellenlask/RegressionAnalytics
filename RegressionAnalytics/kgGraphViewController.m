@@ -192,13 +192,13 @@ NSArray* regression;
     //Prepare the Canvas
 	_canvasView.image = nil;
 	UIGraphicsBeginImageContext(self.view.frame.size);
-	[self.canvasView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+	[self.canvasView.image drawInRect:CGRectMake(0, 0, WIDTH, HEIGHT)];
 	CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
 	CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 5);
     
 	//Setup the axis
-    double yAxis = self.view.frame.size.width / 2;
-    double xAxis = self.view.frame.size.height / 2;
+    double yAxis = WIDTH / 2;
+    double xAxis = HEIGHT / 2;
     
     //Re-scale the points to fit in the window
     for(int i = 0; i < resolution; i++)
@@ -209,10 +209,10 @@ NSArray* regression;
     
     //Draw the axes
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), 0, yAxis);
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), self.view.frame.size.width, yAxis);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), WIDTH, yAxis);
     
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), xAxis, 0);
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), xAxis, self.view.frame.size.height);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), xAxis, HEIGHT);
     
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), x[0], y[0]);
     
