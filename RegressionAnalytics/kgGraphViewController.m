@@ -232,6 +232,12 @@ NSArray* regression;
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), xAxis, HEIGHT);
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     
+    //Draw the axis labels
+    [[NSString stringWithFormat:@"%3.3f",xmax] drawAtPoint:CGPointMake(xAxis+5, 0) withFont:[UIFont boldSystemFontOfSize:12]];
+    [[NSString stringWithFormat:@"%3.3f",xmin] drawAtPoint:CGPointMake(xAxis+5, HEIGHT-20) withFont:[UIFont boldSystemFontOfSize:12]];
+    [[NSString stringWithFormat:@"%3.3f",ymin] drawAtPoint:CGPointMake(0,yAxis) withFont:[UIFont boldSystemFontOfSize:12]];
+    [[NSString stringWithFormat:@"%3.3f",ymax] drawAtPoint:CGPointMake(WIDTH-40, yAxis) withFont:[UIFont boldSystemFontOfSize:12]];
+    
     
     CGContextBeginPath(UIGraphicsGetCurrentContext());
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), x[0], y[0]);

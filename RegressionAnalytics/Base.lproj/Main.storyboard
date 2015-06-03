@@ -117,7 +117,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X6D-Cd-IFJ">
                                 <rect key="frame" x="0.0" y="52" width="320" height="320"/>
                             </imageView>
-                            <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" minimumValue="-20" maximumValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="tGW-Md-2o2">
+                            <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" minimumValue="-15" maximumValue="15" translatesAutoresizingMaskIntoConstraints="NO" id="tGW-Md-2o2">
                                 <rect key="frame" x="113" y="394" width="94" height="29"/>
                                 <connections>
                                     <action selector="zoom:" destination="aqG-tt-b7o" eventType="valueChanged" id="8GA-9e-Jvw"/>

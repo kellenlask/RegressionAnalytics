@@ -84,48 +84,39 @@
 //
 //--------------------------------------------------------
 
-//Calculates the linear regression r value
-+(double)linRegR:(NSArray*)xVals yValues:(NSArray*)yVals
-{
-	//Sum of the products of the x's and the y's
-	double xy = 0;
-	for(int i = 0; i < xVals.count; i++) {
-		xy += [xVals[i] doubleValue] * [yVals[i] doubleValue];
-	}
-	
-	//Sum of the x's squared
-	double xSquare = 0;
-	for(NSNumber *num in xVals) 
-	{
-		xSquare += pow([num doubleValue], 2);
-	}
-	
-	//Sum of the y's squared
-	double ySquare = 0;
-	for(NSNumber *num in yVals) 
-	{
-		ySquare += pow([num doubleValue], 2);
-	}
-	
-	//Calculate the r value
-	return xy / sqrt(xSquare * ySquare);
-	
-} //End linRegR
-
 //Linear Least Squares
 +(NSArray*)linReg:(NSArray*)xVals yValues:(NSArray*)yVals
 {
 	//Get some values
-	double r = [kgRegression linRegR:xVals yValues:yVals];
-	double xDev = [kgRegression calcStdDev:xVals];
+/*	double xDev = [kgRegression calcStdDev:xVals];
 	double yDev = [kgRegression calcStdDev:yVals];
 	double yMean = [kgRegression calcMean:yVals];
-	double xMean = [kgRegression calcMean:xVals];
+	double xMean = [kgRegression calcMean:xVals]; */
+    double xsum = 0;
+    double ysum = 0;
+    double xysum = 0;
+    double x2sum = 0;
+    double y2sum = 0;
+    double xtmp = 0;
+    double ytmp = 0;
+    int N = [xVals count];
 	
-	//Calculate the regression
-	double slope = r * (yDev / xDev);
-	double yIntercept = yMean - slope * xMean;
-	
+    for(int i=0;i<N;i++)
+    {
+        xtmp = [xVals[i] doubleValue];
+        ytmp = [yVals[i] doubleValue];
+        
+        xsum+=xtmp;
+        ysum+=ytmp;
+        xysum+=xtmp*ytmp;
+        x2sum+=xtmp*xtmp;
+        y2sum+=ytmp*ytmp;
+    }
+    //Calculate the regression
+    double slope = (N*xysum-xsum*ysum)/(N*x2sum-xsum*xsum);
+    double yIntercept = (x2sum*ysum-xsum*xysum)/(N*x2sum-xsum*xsum);
+    double r = (N*xysum-xsum*ysum)/sqrt(((N*x2sum-xsum*xsum)*(N*y2sum-ysum*ysum)));
+    
 	NSArray* returnArray = [NSArray arrayWithObjects:[NSNumber numberWithDouble:yIntercept], [NSNumber numberWithDouble:slope], [NSNumber numberWithDouble:r], nil]; 
 	
 	return returnArray;
