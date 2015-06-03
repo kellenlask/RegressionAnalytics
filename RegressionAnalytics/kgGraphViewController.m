@@ -14,7 +14,7 @@
 
 kgGlobalData *data;
 
-int resolution = 500;
+int resolution = 100;
 
 double xmin = -10.;
 double xmax = 10.;
@@ -41,9 +41,11 @@ NSArray* regression;
 -(void)viewDidAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-	
-	HEIGHT = self.canvasView.frame.size.height;
-	WIDTH = self.canvasView.frame.size.width;
+    
+	HEIGHT = self.view.frame.size.height;
+    WIDTH = self.view.frame.size.width;
+    
+    NSLog([NSString stringWithFormat:@"Height: %d\nWidth: %d",HEIGHT,WIDTH]);
 	
 	data = [[kgGlobalData alloc] init];
 	
@@ -60,6 +62,12 @@ NSArray* regression;
 		[self prepareFunction];
 	}
 	
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    _canvasView.image = nil;
+    [super viewWillDisappear:animated];
 }
 
 //-----------------------------------------------------------------------
@@ -84,13 +92,15 @@ NSArray* regression;
 		int zoomLevel = _zoom.value;
 		
 		//Scale the window
-		xmax = 10 * pow(1.5, zoomLevel);
-		xmin = -10 * pow(1.5, zoomLevel);
-		ymax = 10 * pow(1.5, zoomLevel);
-		ymin = -10 * pow(1.5, zoomLevel);
+		xmax = 10 / pow(1.5, zoomLevel);
+		xmin = -10 / pow(1.5, zoomLevel);
+		ymax = 10 / pow(1.5, zoomLevel);
+		ymin = -10 / pow(1.5, zoomLevel);
 		
 		//Redraw the graph
 		[self prepareFunction];
+        
+        NSLog([NSString stringWithFormat:@"xmin: %f\nxmax: %f\nymin: %f\nymax: %f",xmin,xmax,ymin,ymax]);
 		
 	}
 } //End zoom
@@ -129,7 +139,7 @@ NSArray* regression;
 			
             for(int i = 0; i < resolution; i++)
             {
-                y[i]=[regression[1] doubleValue]*x[i]-[regression[0] doubleValue];
+                y[i]=[regression[1] doubleValue]*x[i]+[regression[0] doubleValue];
             }
 			
 			//Draw the graph
@@ -194,33 +204,42 @@ NSArray* regression;
 	UIGraphicsBeginImageContext(self.view.frame.size);
 	[self.canvasView.image drawInRect:CGRectMake(0, 0, WIDTH, HEIGHT)];
 	CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-	CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 5);
+	CGContextSetLineWidth(UIGraphicsGetCurrentContext(), 3);
     
 	//Setup the axis
-    double yAxis = WIDTH / 2;
-    double xAxis = HEIGHT / 2;
+    double yAxis = [self yToGraph:0]; // scaled to pixels
+    double xAxis = [self xToGraph:0]; // scaled to pixels
+    
+    NSLog([NSString stringWithFormat:@"X Axis: %f \nY Axis: %f",xAxis,yAxis]);
     
     //Re-scale the points to fit in the window
     for(int i = 0; i < resolution; i++)
     {
+        NSLog([NSString stringWithFormat:@"Point before line: %f, %f",x[i],y[i]]);
         x[i]=[self xToGraph:x[i]];
-        y[i]=yAxis-[self yToGraph:y[i]];
+        y[i]=HEIGHT-[self yToGraph:y[i]];
+        NSLog([NSString stringWithFormat:@"Point on line: %f, %f",x[i],y[i]]);
     }
     
     //Draw the axes
+    CGContextBeginPath(UIGraphicsGetCurrentContext());
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), 0, yAxis);
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), WIDTH, yAxis);
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
     
+    CGContextBeginPath(UIGraphicsGetCurrentContext());
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), xAxis, 0);
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), xAxis, HEIGHT);
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
     
+    
+    CGContextBeginPath(UIGraphicsGetCurrentContext());
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), x[0], y[0]);
-    
-    //Draw the curve
-    for(int i=1;i<resolution;i++)
+    for(int i=1;i<resolution;i++)//Draw the curve
     {
         CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), x[i], y[i]);
     }
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
 	
 	NSArray* xVals = data.getXValues;
 	NSArray* yVals = data.getYValues;
@@ -233,7 +252,8 @@ NSArray* regression;
 		if(xmin <= [xVals[i] doubleValue] && [xVals[i] doubleValue] <= xmax && ymin <= [yVals[i] doubleValue] && [yVals[i] doubleValue] <= ymax) {
 			//Put the point on the graph
 			double dx = (xmax-xmin)/resolution; //dx = dy, so far...
-			[self drawPoint: [xVals[i] doubleValue] * dx y:[yVals[i] doubleValue] * dx];
+            double dy = (ymax-ymin)/resolution;
+			[self drawPoint: [self xToGraph:[xVals[i] doubleValue]] y:[self yToGraph:[yVals[i] doubleValue]]];
 			
 		}
 	} //End For-loop
@@ -259,13 +279,13 @@ NSArray* regression;
 //Scales the window to the ImageView dx
 - (double)xToGraph:(double)x
 {
-    return (WIDTH*x/(xmax-xmin));
+    return (WIDTH*(x-xmin)/(xmax-xmin));
 }
 
 //Scales the window to the ImageView dy
 - (double)yToGraph:(double)y
 {
-    return (HEIGHT*y/(ymax-ymin));
+    return (HEIGHT*(y-ymin)/(ymax-ymin));
 }
 
 @end

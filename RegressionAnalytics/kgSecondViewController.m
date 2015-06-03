@@ -17,7 +17,11 @@ NSArray* linRegression;
 NSArray* logRegression;
 NSArray* expRegression;
 NSArray* powRegression;
-
+NSArray* sortedYVals;
+NSArray* sortedXVals;
+bool canLogReg;
+bool canExpReg;
+bool canPowReg;
 
 - (void)viewDidLoad
 {
@@ -66,26 +70,43 @@ NSArray* powRegression;
 	double xStdDev = [kgRegression calcStdDev:data.getXValues];
 	double yStdDev = [kgRegression calcStdDev:data.getYValues];
 	
+    sortedXVals = [data.getXValues sortedArrayUsingSelector:@selector(compare:)];
+    sortedYVals = [data.getYValues sortedArrayUsingSelector:@selector(compare:)];
+    
+    NSLog([NSString stringWithFormat:@"X1: %f\nY1: %f",[sortedXVals[0] doubleValue],[sortedYVals[0] doubleValue]]);
+    canExpReg = [sortedYVals[0] doubleValue]>0;
+    canLogReg = [sortedXVals[0] doubleValue]>0;
+    canPowReg = canExpReg && canLogReg;
+    
+    NSString* logarithmic = @"Because the x values are 0 or smaller, no logarithmic regression can be computed.";
+    NSString* exponential = @"Because the y values are 0 or smaller, no exponential regression can be computed.";
+    NSString* power = @"Because the x or y values are 0 or smaller, no power regression can be computed.";
+    
+    
 	//Linear Regression
 	linRegression = [kgRegression linReg:data.getXValues yValues:data.getYValues];
-	logRegression = [kgRegression logReg:data.getXValues yValues:data.getYValues];
-	expRegression = [kgRegression expReg:data.getXValues yValues:data.getYValues];
-	powRegression = [kgRegression powReg:data.getXValues yValues:data.getYValues];
-	
+    NSString* linear = [NSString stringWithFormat:@"Linear Regression\n\tr: %f\n\tr²: %f\n\ty=(%f)x+(%f)", [linRegression[2] doubleValue], pow([linRegression[2] doubleValue], 2), [linRegression[1] doubleValue], [linRegression[0] doubleValue]];
+    
+    if(canLogReg) //Logarithmic Regression
+    {
+        logRegression = [kgRegression logReg:data.getXValues yValues:data.getYValues];
+        logarithmic = [NSString stringWithFormat:@"Logarithmic Regression\n\tr: %f\n\tr²: %f\n\ty=log((%f)x+(%f))", [logRegression[2] doubleValue], pow([logRegression[2] doubleValue], 2), [logRegression[1] doubleValue], [logRegression[0] doubleValue]];
+    }
+    if(canExpReg) //Exponential Regression
+    {
+        expRegression = [kgRegression expReg:data.getXValues yValues:data.getYValues];
+        exponential = [NSString stringWithFormat:@"Exponential Regression\n\tr: %f\n\tr²: %f\n\ty=e^((%f)x+(%f))", [expRegression[2] doubleValue], pow([expRegression[2] doubleValue], 2), [expRegression[1] doubleValue], [expRegression[0] doubleValue]];
+    }
+	if(canPowReg) //Power Regression
+    {
+        powRegression = [kgRegression powReg:data.getXValues yValues:data.getYValues];
+        power = [NSString stringWithFormat:@"Power Regression\n\tr: %f\n\tr²: %f\n\ty=(%f)x^((%f))", [powRegression[2] doubleValue], pow([powRegression[2] doubleValue], 2), [powRegression[0] doubleValue], [powRegression[1] doubleValue]];
+    }
+    
+    
+    
 	//Simple Analysis
 	NSString* simple = [NSString stringWithFormat:@"X \nMean: %f\nMedian: %f\nStdDev: %f\nVar: %f\n--------------------\nY \nMean: %f\nMedian: %f\nStdDev: %f\nVar: %f\n====================", xMean, xMedian, xStdDev, xVariance, yMean, yMedian, yStdDev, yVariance];
-	
-	//Linear Regression
-	NSString* linear = [NSString stringWithFormat:@"Linear Regression\n\tr: %f\n\tr²: %f\n\ty=(%f)x+(%f)", [linRegression[2] doubleValue], pow([linRegression[2] doubleValue], 2), [linRegression[1] doubleValue], [linRegression[0] doubleValue]];
-	
-	//Logarithmic Regression
-	NSString* logarithmic = [NSString stringWithFormat:@"Logarithmic Regression\n\tr: %f\n\tr²: %f\n\ty=log((%f)x+(%f))", [logRegression[2] doubleValue], pow([logRegression[2] doubleValue], 2), [logRegression[1] doubleValue], [logRegression[0] doubleValue]];
-	
-	//Exponential Regression
-	NSString* exponential = [NSString stringWithFormat:@"Exponential Regression\n\tr: %f\n\tr²: %f\n\ty=e^((%f)x+(%f))", [expRegression[2] doubleValue], pow([expRegression[2] doubleValue], 2), [expRegression[1] doubleValue], [expRegression[0] doubleValue]];
-	
-	//Power Regression
-	NSString* power = [NSString stringWithFormat:@"Power Regression\n\tr: %f\n\tr²: %f\n\ty=(%f)x^((%f))", [powRegression[2] doubleValue], pow([powRegression[2] doubleValue], 2), [powRegression[0] doubleValue], [powRegression[1] doubleValue]];
 	
 	//Create the MONSTER STRING!!!!!!!!
 	NSString* returnString = [NSString stringWithFormat:@"%@\n\n%@\n\n%@\n\n%@\n\n%@", simple, linear, logarithmic, exponential, power];
@@ -98,10 +119,23 @@ NSArray* powRegression;
 -(void)setPreferredRegression
 {
 	double lin = [linRegression[2] doubleValue];
-	double log = [logRegression[2] doubleValue];
-	double exp = [expRegression[2] doubleValue];
-	double pow = [powRegression[2] doubleValue];
-	
+    double log;
+    double exp;
+    double pow;
+    
+    if(canLogReg)
+        log = [logRegression[2] doubleValue];
+    else
+        log = -1;
+	if(canExpReg)
+        exp = [expRegression[2] doubleValue];
+    else
+        exp = -1;
+    if(canPowReg)
+        pow = [powRegression[2] doubleValue];
+	else
+        pow = -1;
+    
 	NSArray* rValues = [NSArray arrayWithObjects:[NSNumber numberWithFloat:lin], [NSNumber numberWithFloat:log], [NSNumber numberWithFloat:exp], [NSNumber numberWithFloat:pow], nil];
 	
 	int index1 = (lin > log) ? 0 : 1;

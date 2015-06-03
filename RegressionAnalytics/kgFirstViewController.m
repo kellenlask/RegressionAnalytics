@@ -29,7 +29,6 @@ kgGlobalData *data;
     [super viewDidLoad];
 	data = [[kgGlobalData alloc] init];
     
-    
     self.inputXValues = [[NSMutableArray array] init];
     self.inputYValues = [[NSMutableArray array] init];
     // Initialize the x and y lists to have 0 in them
