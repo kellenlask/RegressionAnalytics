@@ -37,7 +37,6 @@ kgGlobalData *data;
     UIEdgeInsets contentInset = tableView.contentInset;
     contentInset.top = 20;
     [tableView setContentInset:contentInset];
-	
 } //End viewDidLoad
 
 -(void)viewWillDisappear:(BOOL)animated

@@ -134,7 +134,7 @@ NSArray* regression;
 		case 1: //Linear
 			regression = [kgRegression linReg:data.getXValues yValues:data.getYValues];
 			
-			curve = [NSString stringWithFormat:@"y=(%f)x+(%f)", [regression[1] doubleValue], [regression[0] doubleValue]];
+			curve = [NSString stringWithFormat:@"y=(%.2f)x+(%.2f)", [regression[1] doubleValue], [regression[0] doubleValue]];
 			[_equation setText:curve];
 			
             for(int i = 0; i < resolution; i++)
@@ -149,7 +149,7 @@ NSArray* regression;
         case 2: //Log
 			regression = [kgRegression logReg:data.getXValues yValues:data.getYValues];
 			
-			curve = [NSString stringWithFormat:@"y=log((%f)x+(%f))", [regression[1] doubleValue], [regression[0] doubleValue]];
+			curve = [NSString stringWithFormat:@"y=log((%.2f)x+(%f))", [regression[1] doubleValue], [regression[0] doubleValue]];
 			[_equation setText:curve];
 			
             for(int i = 0; i < resolution; i++)
@@ -164,7 +164,7 @@ NSArray* regression;
         case 3: //Exp
 			regression = [kgRegression expReg:data.getXValues yValues:data.getYValues];
 			
-			curve = [NSString stringWithFormat:@"y=e^((%f)x+(%f))", [regression[1] doubleValue], [regression[0] doubleValue]];
+			curve = [NSString stringWithFormat:@"y=e^((%.2f)x+(%.2f))", [regression[1] doubleValue], [regression[0] doubleValue]];
 			[_equation setText:curve];
 			
             for(int i = 0; i < resolution; i++)
@@ -179,7 +179,7 @@ NSArray* regression;
         case 4: //Power
 			regression = [kgRegression powReg:data.getXValues yValues:data.getYValues];
 			
-			curve = [NSString stringWithFormat:@"y=(%f)x^(%f)", [regression[1] doubleValue], [regression[0] doubleValue]];
+			curve = [NSString stringWithFormat:@"y=(%.2f)x^(%.2f)", [regression[1] doubleValue], [regression[0] doubleValue]];
 			[_equation setText:curve];
 			
             for(int i = 0; i < resolution; i++)
@@ -210,6 +210,9 @@ NSArray* regression;
     double yAxis = [self yToGraph:0]; // scaled to pixels
     double xAxis = [self xToGraph:0]; // scaled to pixels
     
+    
+    
+    
     NSLog([NSString stringWithFormat:@"X Axis: %f \nY Axis: %f",xAxis,yAxis]);
     
     //Re-scale the points to fit in the window
@@ -233,17 +236,36 @@ NSArray* regression;
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     
     //Draw the axis labels
-    [[NSString stringWithFormat:@"%3.3f",xmax] drawAtPoint:CGPointMake(xAxis+5, 0) withFont:[UIFont boldSystemFontOfSize:12]];
-    [[NSString stringWithFormat:@"%3.3f",xmin] drawAtPoint:CGPointMake(xAxis+5, HEIGHT-20) withFont:[UIFont boldSystemFontOfSize:12]];
-    [[NSString stringWithFormat:@"%3.3f",ymin] drawAtPoint:CGPointMake(0,yAxis) withFont:[UIFont boldSystemFontOfSize:12]];
-    [[NSString stringWithFormat:@"%3.3f",ymax] drawAtPoint:CGPointMake(WIDTH-40, yAxis) withFont:[UIFont boldSystemFontOfSize:12]];
-    
+    if(xmax<0 && xmax>0)
+    {
+        [[NSString stringWithFormat:@"%.3f",ymax] drawAtPoint:CGPointMake(xAxis+5, 0) withFont:[UIFont boldSystemFontOfSize:12]];
+        [[NSString stringWithFormat:@"%.3f",ymin] drawAtPoint:CGPointMake(xAxis+5, HEIGHT-20) withFont:[UIFont boldSystemFontOfSize:12]];
+    }
+    else
+    {
+        [[NSString stringWithFormat:@"%.3f",ymax] drawAtPoint:CGPointMake(WIDTH/2, 0) withFont:[UIFont boldSystemFontOfSize:12]];
+        [[NSString stringWithFormat:@"%.3f",ymin] drawAtPoint:CGPointMake(WIDTH/2, HEIGHT-20) withFont:[UIFont boldSystemFontOfSize:12]];
+    }
+    if(ymin<0 && ymax>0)
+    {
+        [[NSString stringWithFormat:@"%.3f",xmin] drawAtPoint:CGPointMake(0,HEIGHT/2) withFont:[UIFont boldSystemFontOfSize:12]];
+        [[NSString stringWithFormat:@"%.3f",xmax] drawAtPoint:CGPointMake(WIDTH-40, HEIGHT/2) withFont:[UIFont boldSystemFontOfSize:12]];
+    }
+    else
+    {
+        [[NSString stringWithFormat:@"%.3f",xmin] drawAtPoint:CGPointMake(0,yAxis) withFont:[UIFont boldSystemFontOfSize:12]];
+        [[NSString stringWithFormat:@"%.3f",xmax] drawAtPoint:CGPointMake(WIDTH-40, yAxis) withFont:[UIFont boldSystemFontOfSize:12]];
+    }
     
     CGContextBeginPath(UIGraphicsGetCurrentContext());
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), x[0], y[0]);
     for(int i=1;i<resolution;i++)//Draw the curve
     {
-        CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), x[i], y[i]);
+        if(y[i]<10000 && y[i]>-10000)
+        {
+            NSLog([NSString stringWithFormat:@"%.3f",y[i]]);
+            CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), x[i], y[i]);
+        }
     }
     CGContextStrokePath(UIGraphicsGetCurrentContext());
 	
@@ -257,8 +279,6 @@ NSArray* regression;
 		//If the point falls within the window
 		if(xmin <= [xVals[i] doubleValue] && [xVals[i] doubleValue] <= xmax && ymin <= [yVals[i] doubleValue] && [yVals[i] doubleValue] <= ymax) {
 			//Put the point on the graph
-			double dx = (xmax-xmin)/resolution; //dx = dy, so far...
-            double dy = (ymax-ymin)/resolution;
 			[self drawPoint: [self xToGraph:[xVals[i] doubleValue]] y:[self yToGraph:[yVals[i] doubleValue]]];
 			
 		}

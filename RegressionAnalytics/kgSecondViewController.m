@@ -100,7 +100,7 @@ bool canPowReg;
 	if(canPowReg) //Power Regression
     {
         powRegression = [kgRegression powReg:data.getXValues yValues:data.getYValues];
-        power = [NSString stringWithFormat:@"Power Regression\n\tr: %f\n\tr²: %f\n\ty=(%f)x^((%f))", [powRegression[2] doubleValue], pow([powRegression[2] doubleValue], 2), [powRegression[0] doubleValue], [powRegression[1] doubleValue]];
+        power = [NSString stringWithFormat:@"Power Regression\n\tr: %f\n\tr²: %f\n\ty=(%f)x^(%f)", [powRegression[2] doubleValue], pow([powRegression[2] doubleValue], 2), [powRegression[0] doubleValue], [powRegression[1] doubleValue]];
     }
     
     
