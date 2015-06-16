@@ -14,7 +14,7 @@
 
 kgGlobalData *data;
 
-int resolution = 100;
+int resolution = 300;
 
 double xmin = -10.;
 double xmax = 10.;
@@ -23,6 +23,8 @@ double ymax = 10.;
 
 int HEIGHT;
 int WIDTH;
+int preferred;
+int logtope;
 
 
 NSArray* regression;
@@ -45,7 +47,7 @@ NSArray* regression;
 	HEIGHT = self.view.frame.size.height;
     WIDTH = self.view.frame.size.width;
     
-    NSLog([NSString stringWithFormat:@"Height: %d\nWidth: %d",HEIGHT,WIDTH]);
+    //NSLog([NSString stringWithFormat:@"Height: %d\nWidth: %d",HEIGHT,WIDTH]);
 	
 	data = [[kgGlobalData alloc] init];
 	
@@ -100,7 +102,7 @@ NSArray* regression;
 		//Redraw the graph
 		[self prepareFunction];
         
-        NSLog([NSString stringWithFormat:@"xmin: %f\nxmax: %f\nymin: %f\nymax: %f",xmin,xmax,ymin,ymax]);
+        //NSLog([NSString stringWithFormat:@"xmin: %f\nxmax: %f\nymin: %f\nymax: %f",xmin,xmax,ymin,ymax]);
 		
 	}
 } //End zoom
@@ -113,11 +115,15 @@ NSArray* regression;
 
 -(void)prepareFunction
 {
+    preferred = [data getPreferedRegression];
+    //Keep track of which plot is going to be drawn
+    
 	//Create arrays to store the line points
-	double x[resolution];
+    double x[resolution];
     double y[resolution];
+    
 	
-	//Figure out the number of window points per resolution point 
+	//Figure out the number of window points per resolution point
     double dx=(xmax-xmin)/resolution;
     
 	//Create the list of x values to plug into the function
@@ -129,7 +135,7 @@ NSArray* regression;
     NSString* curve;
 	
 	//Map the function's x's to its y's using the appropriate regression model
-    switch([data getPreferedRegression])
+    switch(preferred)
     {
 		case 1: //Linear
 			regression = [kgRegression linReg:data.getXValues yValues:data.getYValues];
@@ -141,24 +147,27 @@ NSArray* regression;
             {
                 y[i]=[regression[1] doubleValue]*x[i]+[regression[0] doubleValue];
             }
-			
+            
 			//Draw the graph
-			[self drawGraph:x y:y];	
+			[self drawGraph:x y:y];
             break;
 			
         case 2: //Log
 			regression = [kgRegression logReg:data.getXValues yValues:data.getYValues];
-			
-			curve = [NSString stringWithFormat:@"y=log((%.2f)x+(%f))", [regression[1] doubleValue], [regression[0] doubleValue]];
+            logtope = 0;
+            
+			curve = [NSString stringWithFormat:@"y=ln((%.2f)x+(%f))", [regression[1] doubleValue], [regression[0] doubleValue]];
 			[_equation setText:curve];
-			
+            
             for(int i = 0; i < resolution; i++)
             {
                 y[i]=log([regression[1] doubleValue]*x[i]+[regression[0] doubleValue]);
+                if(x[i] > -[regression[0] doubleValue]/[regression[1] doubleValue] && x[i-1] <= -[regression[0] doubleValue]/[regression[1] doubleValue])
+                    logtope = i;
             }
-			
+            
 			//Draw the graph
-			[self drawGraph:x y:y];	
+			[self drawGraph:x y:y];
             break;
 			
         case 3: //Exp
@@ -213,15 +222,15 @@ NSArray* regression;
     
     
     
-    NSLog([NSString stringWithFormat:@"X Axis: %f \nY Axis: %f",xAxis,yAxis]);
+    //NSLog([NSString stringWithFormat:@"X Axis: %f \nY Axis: %f",xAxis,yAxis]);
     
     //Re-scale the points to fit in the window
     for(int i = 0; i < resolution; i++)
     {
-        NSLog([NSString stringWithFormat:@"Point before line: %f, %f",x[i],y[i]]);
+        //NSLog([NSString stringWithFormat:@"Point before line: %f, %f",x[i],y[i]]);
         x[i]=[self xToGraph:x[i]];
         y[i]=HEIGHT-[self yToGraph:y[i]];
-        NSLog([NSString stringWithFormat:@"Point on line: %f, %f",x[i],y[i]]);
+        //NSLog([NSString stringWithFormat:@"Point on line: %f, %f",x[i],y[i]]);
     }
     
     //Draw the axes
@@ -257,14 +266,29 @@ NSArray* regression;
         [[NSString stringWithFormat:@"%.3f",xmax] drawAtPoint:CGPointMake(WIDTH-40, yAxis) withFont:[UIFont boldSystemFontOfSize:12]];
     }
     
+    //Draw the function
     CGContextBeginPath(UIGraphicsGetCurrentContext());
-    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), x[0], y[0]);
-    for(int i=1;i<resolution;i++)//Draw the curve
+    
+    int j;
+
+    if(logtope != 0)
     {
-        if(y[i]<10000 && y[i]>-10000)
+        if(preferred == 2) { //Plotting a log
+            j = logtope;
+            NSLog([NSString stringWithFormat:@"%f %f",x[j],y[j]]);
+            CGContextMoveToPoint(UIGraphicsGetCurrentContext(), x[j], y[j]);
+        } else { //Not plotting a log
+            j = 0;
+            CGContextMoveToPoint(UIGraphicsGetCurrentContext(), x[0], y[0]);
+        }
+    
+        for(int i=j+1;i<resolution;i++)//Draw the curve
         {
-            NSLog([NSString stringWithFormat:@"%.3f",y[i]]);
-            CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), x[i], y[i]);
+            if(y[i]<10000 && y[i]>-10000)
+            {
+                //NSLog([NSString stringWithFormat:@"%.3f",y[i]]);
+                CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), x[i], y[i]);
+            }
         }
     }
     CGContextStrokePath(UIGraphicsGetCurrentContext());
@@ -302,13 +326,13 @@ NSArray* regression;
 	
 } //End drawPoint
 
-//Scales the window to the ImageView dx
+//Changes the x value to match the imageview coords
 - (double)xToGraph:(double)x
 {
     return (WIDTH*(x-xmin)/(xmax-xmin));
 }
 
-//Scales the window to the ImageView dy
+//Changes the y value to match the imageview coords
 - (double)yToGraph:(double)y
 {
     return (HEIGHT*(y-ymin)/(ymax-ymin));

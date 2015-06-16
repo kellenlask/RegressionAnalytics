@@ -73,14 +73,14 @@ bool canPowReg;
     sortedXVals = [data.getXValues sortedArrayUsingSelector:@selector(compare:)];
     sortedYVals = [data.getYValues sortedArrayUsingSelector:@selector(compare:)];
     
-    NSLog([NSString stringWithFormat:@"X1: %f\nY1: %f",[sortedXVals[0] doubleValue],[sortedYVals[0] doubleValue]]);
+    //NSLog([NSString stringWithFormat:@"X1: %f\nY1: %f",[sortedXVals[0] doubleValue],[sortedYVals[0] doubleValue]]);
     canExpReg = [sortedYVals[0] doubleValue]>0;
     canLogReg = [sortedXVals[0] doubleValue]>0;
     canPowReg = canExpReg && canLogReg;
     
-    NSString* logarithmic = @"Because the x values are 0 or smaller, no logarithmic regression can be computed.";
-    NSString* exponential = @"Because the y values are 0 or smaller, no exponential regression can be computed.";
-    NSString* power = @"Because the x or y values are 0 or smaller, no power regression can be computed.";
+    NSString* logarithmic = @"Logarithmic Regression\nBecause the x values are 0 or smaller, no logarithmic regression can be computed.";
+    NSString* exponential = @"Exponential Regression\nBecause the y values are 0 or smaller, no exponential regression can be computed.";
+    NSString* power = @"Power Regression\nBecause the x or y values are 0 or smaller, no power regression can be computed.";
     
     
 	//Linear Regression
@@ -90,7 +90,7 @@ bool canPowReg;
     if(canLogReg) //Logarithmic Regression
     {
         logRegression = [kgRegression logReg:data.getXValues yValues:data.getYValues];
-        logarithmic = [NSString stringWithFormat:@"Logarithmic Regression\n\tr: %f\n\tr²: %f\n\ty=log((%f)x+(%f))", [logRegression[2] doubleValue], pow([logRegression[2] doubleValue], 2), [logRegression[1] doubleValue], [logRegression[0] doubleValue]];
+        logarithmic = [NSString stringWithFormat:@"Logarithmic Regression\n\tr: %f\n\tr²: %f\n\ty=ln((%f)x+(%f))", [logRegression[2] doubleValue], pow([logRegression[2] doubleValue], 2), [logRegression[1] doubleValue], [logRegression[0] doubleValue]];
     }
     if(canExpReg) //Exponential Regression
     {

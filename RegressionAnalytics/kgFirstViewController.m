@@ -79,7 +79,7 @@ kgGlobalData *data;
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     
     if(t==0){
-        cell.textLabel.text = [NSString stringWithFormat:@"Type in data values and press 'add data'"]; // we don't have data yet, here's the helpful text
+        cell.textLabel.text = [NSString stringWithFormat:@"Type in data values and press 'add'"]; // we don't have data yet, here's the helpful text
         return cell;
     }
     else{
@@ -147,7 +147,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [_inputYValues addObject:[NSNumber numberWithDouble:y]];
     
     [_tableView reloadData]; // refresh the table to show what we added
-    NSLog([NSString stringWithFormat:@"Data added. Count: %d", (int) [_inputXValues count]]); // Log how much data we have for debugging purposes
+    //NSLog([NSString stringWithFormat:@"Data added. Count: %d", (int) [_inputXValues count]]); // Log how much data we have for debugging purposes
     t++;
     
     _xField.text = @""; // reset the text fields to make things purdy
@@ -160,7 +160,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [_inputXValues removeObjectAtIndex:position];
     [_inputYValues removeObjectAtIndex:position]; // rip the data out of the middle
     [_tableView reloadData];
-    NSLog([NSString stringWithFormat:@"Data removed. Count: %d",(int) [_inputXValues count]]); // Log how much data we have for debugging purposes
+    //NSLog([NSString stringWithFormat:@"Data removed. Count: %d",(int) [_inputXValues count]]); // Log how much data we have for debugging purposes
     t--; // keep track of data with an extra integer (besides _inputXValues count) to prevent bugs in the interface
 }
 @end
