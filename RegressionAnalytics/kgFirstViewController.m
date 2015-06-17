@@ -37,6 +37,8 @@ kgGlobalData *data;
     UIEdgeInsets contentInset = tableView.contentInset;
     contentInset.top = 20;
     [tableView setContentInset:contentInset];
+    
+    [data setTab:0];
 } //End viewDidLoad
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -152,6 +154,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     
     _xField.text = @""; // reset the text fields to make things purdy
     _yField.text = @"";
+    [data dataChanged];
 }
 
 // method to remove data from the arrays
@@ -160,6 +163,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [_inputXValues removeObjectAtIndex:position];
     [_inputYValues removeObjectAtIndex:position]; // rip the data out of the middle
     [_tableView reloadData];
+    [data dataChanged];
     //NSLog([NSString stringWithFormat:@"Data removed. Count: %d",(int) [_inputXValues count]]); // Log how much data we have for debugging purposes
     t--; // keep track of data with an extra integer (besides _inputXValues count) to prevent bugs in the interface
 }

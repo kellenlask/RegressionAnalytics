@@ -16,4 +16,11 @@
 -(void)setXValues:(NSArray*)values;
 -(void)setYValues:(NSArray*)values;
 -(void)setPreferedRegression:(int)best;
+
+//Methods when the user skips the regression tab
+-(void)dataChanged;
+-(void)dataRegressed;
+-(BOOL)wasDataChanged;
+-(int)getCurrentTab;
+-(void)setTab:(NSInteger)tab;
 @end

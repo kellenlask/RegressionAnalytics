@@ -16,12 +16,8 @@
 +(double)calcMedian:(NSArray*)values;
 
 //Regressions
-+(double)linRegR:(NSArray*)xVals yValues:(NSArray*)yVals;
 +(NSArray*)linReg:(NSArray*)xVals yValues:(NSArray*)yVals;
 +(NSArray*)logReg:(NSArray*)xVals yValues:(NSArray*)yVals;
 +(NSArray*)expReg:(NSArray*)xVals yValues:(NSArray*)yVals;
 +(NSArray*)powReg:(NSArray*)xVals yValues:(NSArray*)yVals;
-
-
-
 @end

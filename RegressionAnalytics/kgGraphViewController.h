@@ -14,7 +14,4 @@
 @property (strong, nonatomic) IBOutlet UIImageView *canvasView;
 
 - (IBAction)zoom:(UIStepper *)sender;
-
-
-
 @end

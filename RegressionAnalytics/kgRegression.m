@@ -36,7 +36,6 @@
 	for(NSNumber *num in values) 
 	{
 		variance += pow(mean - [num doubleValue], 2);
-		
 	}
 	
 	variance /= values.count;
@@ -88,10 +87,6 @@
 +(NSArray*)linReg:(NSArray*)xVals yValues:(NSArray*)yVals
 {
 	//Get some values
-/*	double xDev = [kgRegression calcStdDev:xVals];
-	double yDev = [kgRegression calcStdDev:yVals];
-	double yMean = [kgRegression calcMean:yVals];
-	double xMean = [kgRegression calcMean:xVals]; */
     double xsum = 0;
     double ysum = 0;
     double xysum = 0;

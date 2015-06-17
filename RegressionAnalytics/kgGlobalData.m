@@ -27,6 +27,8 @@ static NSArray *yValues;
 // 0: None		2: Log		4: Power
 // 1: Linear	3: Exp			
 static int preferedRegression;
+static int currentTab;
+static bool dataChanged;
 
 //-------------------------------------------------
 //
@@ -46,6 +48,16 @@ static int preferedRegression;
 -(int)getPreferedRegression
 {
 	return preferedRegression;
+}
+
+//Functions to handle when the regression tab is skipped
+-(BOOL)wasDataChanged
+{
+    return dataChanged;
+}
+-(int)getCurrentTab
+{
+    return currentTab;
 }
 
 //-------------------------------------------------
@@ -68,5 +80,18 @@ static int preferedRegression;
 	preferedRegression = best;
 }
 
+//Functions to handle when the graph should be redrawn and how to redraw it if the user skips the regression tab
+-(void)dataChanged
+{
+    dataChanged = TRUE;
+}
+-(void)dataRegressed
+{
+    dataChanged = FALSE;
+}
+-(void)setTab:(NSInteger)tab
+{
+    currentTab = tab;
+}
 
 @end

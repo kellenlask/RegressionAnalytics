@@ -37,19 +37,26 @@ NSArray* regression;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
+    
 } //End viewDidLoad
 
 -(void)viewDidAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
     
-	HEIGHT = self.view.frame.size.height;
+    data = [[kgGlobalData alloc] init];
+    
+    //If you skipped the regression tab, go back and tell them who sent you
+    if([data wasDataChanged])
+    {
+        [data setTab:2];
+        [self.tabBarController setSelectedIndex:1];
+    }
+    
+    HEIGHT = self.view.frame.size.height;
     WIDTH = self.view.frame.size.width;
     
     //NSLog([NSString stringWithFormat:@"Height: %d\nWidth: %d",HEIGHT,WIDTH]);
-	
-	data = [[kgGlobalData alloc] init];
 	
 	//Make sure we don't try to graph something impossible
 	if(data.getXValues.count !=  data.getYValues.count) {
@@ -62,8 +69,7 @@ NSArray* regression;
 		
 	} else {
 		[self prepareFunction];
-	}
-	
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -163,7 +169,7 @@ NSArray* regression;
             {
                 y[i]=log([regression[1] doubleValue]*x[i]+[regression[0] doubleValue]);
                 if(x[i] > -[regression[0] doubleValue]/[regression[1] doubleValue] && x[i-1] <= -[regression[0] doubleValue]/[regression[1] doubleValue])
-                    logtope = i;
+                    logtope = i; // logtope is the index where plotting should start from in the cases of log regression
             }
             
 			//Draw the graph
@@ -196,7 +202,8 @@ NSArray* regression;
                 y[i]=pow([regression[1] doubleValue]*x[i], [regression[0] doubleValue]);
             }
 			
-			//Draw the graph
+            logtope = resolution/2;
+            //Draw the graph
 			[self drawGraph:x y:y];	
             break;
 			
@@ -271,11 +278,11 @@ NSArray* regression;
     
     int j;
 
-    if(logtope != 0)
+    if(logtope != 0 || preferred !=2 || preferred != 4)
     {
-        if(preferred == 2) { //Plotting a log
+        if(preferred == 2 || preferred == 4) { //Plotting a log
             j = logtope;
-            NSLog([NSString stringWithFormat:@"%f %f",x[j],y[j]]);
+            //NSLog([NSString stringWithFormat:@"%f %f",x[j],y[j]]);
             CGContextMoveToPoint(UIGraphicsGetCurrentContext(), x[j], y[j]);
         } else { //Not plotting a log
             j = 0;
@@ -337,5 +344,8 @@ NSArray* regression;
 {
     return (HEIGHT*(y-ymin)/(ymax-ymin));
 }
+
+
+
 
 @end

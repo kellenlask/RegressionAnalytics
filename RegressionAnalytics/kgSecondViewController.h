@@ -10,5 +10,4 @@
 
 @interface kgSecondViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UITextView *regressionView;
-
 @end

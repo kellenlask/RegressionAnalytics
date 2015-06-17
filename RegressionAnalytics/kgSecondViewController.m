@@ -37,7 +37,7 @@ bool canPowReg;
 	
 	//Start up the data
 	data = [[kgGlobalData alloc] init];
-	
+    
 	if(data.getXValues.count !=  data.getYValues.count) {
 		NSString* error = [NSString stringWithFormat:@"Error: Data entry mismatch.\nY:%d values\nX:%d values", (unsigned) data.getXValues.count, (unsigned) data.getYValues.count];
 		
@@ -54,7 +54,17 @@ bool canPowReg;
 		
 		[self setPreferredRegression];
 	}
-	
+    
+    
+    // If you're here because you cheated and tried to skip this tab
+    if([data wasDataChanged] && [data getCurrentTab] == 2)
+    {
+        [data dataRegressed];
+        [data setTab:1];
+        [self.tabBarController setSelectedIndex:2];
+    }
+    
+    [data setTab:1];
 } //End viewWillAppear
 
 //Make the string with the regression information
