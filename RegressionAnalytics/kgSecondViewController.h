@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface kgSecondViewController : UIViewController
-@property (strong, nonatomic) IBOutlet UITextView *regressionView;
+@property(strong, nonatomic) IBOutlet UITextView *regressionView;
 @end

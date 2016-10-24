@@ -35,28 +35,24 @@ static bool dataChanged;
 //		Accessors
 //
 //-------------------------------------------------
--(NSArray*)getXValues
-{
-	return xValues;
+- (NSArray *)getXValues {
+    return xValues;
 }
 
--(NSArray*)getYValues
-{
-	return yValues;
+- (NSArray *)getYValues {
+    return yValues;
 }
 
--(int)getPreferedRegression
-{
-	return preferedRegression;
+- (int)getPreferedRegression {
+    return preferedRegression;
 }
 
 //Functions to handle when the regression tab is skipped
--(BOOL)wasDataChanged
-{
+- (BOOL)wasDataChanged {
     return dataChanged;
 }
--(int)getCurrentTab
-{
+
+- (int)getCurrentTab {
     return currentTab;
 }
 
@@ -65,32 +61,28 @@ static bool dataChanged;
 //		Mutators
 //
 //-------------------------------------------------
--(void)setXValues:(NSArray*)values
-{
-	xValues = values;
+- (void)setXValues:(NSArray *)values {
+    xValues = values;
 }
 
--(void)setYValues:(NSArray*)values
-{
-	yValues = values;
+- (void)setYValues:(NSArray *)values {
+    yValues = values;
 }
 
--(void)setPreferedRegression:(int)best
-{
-	preferedRegression = best;
+- (void)setPreferredRegression:(int)best {
+    preferedRegression = best;
 }
 
 //Functions to handle when the graph should be redrawn and how to redraw it if the user skips the regression tab
--(void)dataChanged
-{
+- (void)dataChanged {
     dataChanged = TRUE;
 }
--(void)dataRegressed
-{
+
+- (void)dataRegressed {
     dataChanged = FALSE;
 }
--(void)setTab:(NSInteger)tab
-{
+
+- (void)setTab:(NSInteger)tab {
     currentTab = tab;
 }
 
